@@ -2,5 +2,6 @@
     <string name="app_name">Exercise Application</string>
     <string name="menu_icon_description" />
     <string name="back_button_description" />
-    <string name="route_exersice">ExersicePage</string>
+    <string name="route_exercise">ExersicePage</string>
+    <string name="exercise_page_title">Gym Page</string>
 </resources>
