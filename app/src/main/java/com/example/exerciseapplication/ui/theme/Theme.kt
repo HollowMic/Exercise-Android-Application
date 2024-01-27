@@ -15,16 +15,49 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+/*
+Primary: 008135
+Secondary: 7f986e
+Tertiary: ad90c6
+Neutral: 8f918c
+ */
+
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = GreenPrimaryDark,
+    secondary = GreenSecondaryDark,
+    tertiary = PurpleTertiaryDark,
+    error = RedErrorDark,
+    background = GreyNeutralDark,
+    surface = GreySurfaceDark,
+    surfaceVariant = GreySurfaceVariantDark,
+
+    onPrimary = OnPrimaryDark,
+    onSecondary = OnSecondaryDark,
+    onTertiary = OnTertiaryDark,
+    onError = OnErrorDark,
+    onBackground = OnBackgroundWhite,
+    onSurface = OnGreySurfaceDark,
+    onSurfaceVariant = OnGreySurfaceVariantDark,
+    outline = OutlineGrey,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = GreenPrimary,
+    secondary = GreenSecondary,
+    tertiary = PurpleTertiary,
+    error = RedError,
+    background = GreyNeutral,
+    surface = GreySurface,
+    surfaceVariant = GreySurfaceVariant,
+
+    onPrimary = OnPrimary,
+    onSecondary = OnPrimary,
+    onTertiary = OnPrimary,
+    onError = OnPrimary,
+    onBackground = OnBackgroundBlack,
+    onSurface = OnGreySurface,
+    onSurfaceVariant = OnGreySurfaceVariant,
+    outline = OutlineGrey,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -41,7 +74,7 @@ private val LightColorScheme = lightColorScheme(
 fun ExerciseApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
