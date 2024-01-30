@@ -28,7 +28,6 @@ fun Page(
     actions: List<@Composable (() -> Unit)> = emptyList(),
     content: @Composable (Modifier) -> Unit
 ) {
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
