@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Button
@@ -24,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +35,7 @@ fun ExerciseRow(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    var selected by remember { mutableStateOf(false) }
     Surface(
         color = PurpleTertiaryDark
     ) {
@@ -55,11 +56,23 @@ fun ExerciseRow(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
+                    IconButton(
                         modifier = Modifier.padding(10.dp, 0.dp),
-                        imageVector = Icons.Rounded.Face,
-                        contentDescription = ""
-                    )
+                        onClick = { selected = !selected }
+                    ) {
+                        if (selected) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_check_box_24),
+                                contentDescription = ""
+                            )
+                        } else {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_check_box_outline_blank_24),
+                                contentDescription = ""
+                            )
+                        }
+                    }
+
                     Text(
                         modifier = Modifier
                             .fillMaxHeight()
@@ -85,8 +98,8 @@ fun ExerciseRow(
                         .fillMaxWidth()
                         .padding(10.dp)
                 ) {
-                    Button(onClick = { /*TODO*/ }) {
-                        Text(text = "Expanded")
+                    Button(onClick = { expanded = !expanded }) {
+                        Text(text = stringResource(id = R.string.save))
                     }
                 }
             }

@@ -36,7 +36,7 @@ fun ExercisePage(
 fun ExercisePageContents(modifier: Modifier, exerciseViewModel: ExerciseViewModel?) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
             DateRow(modifier)
@@ -48,6 +48,5 @@ fun ExercisePageContents(modifier: Modifier, exerciseViewModel: ExerciseViewMode
 @Composable
 @Preview
 fun ExercisePageContentsPreview() {
-
     ExercisePageContents(modifier = Modifier.height(1000.dp).width(400.dp), exerciseViewModel = null)
 }

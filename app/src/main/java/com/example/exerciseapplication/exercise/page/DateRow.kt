@@ -1,6 +1,7 @@
 package com.example.exerciseapplication.exercise.page
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,26 +23,29 @@ import java.util.Date
 
 @Composable
 fun DateRow(modifier: Modifier = Modifier) {
-    Surface(
-        modifier = Modifier.fillMaxWidth().height(60.dp),
-        color = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().height(20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+    Box {
+        Surface(
+            modifier = Modifier.fillMaxWidth().height(60.dp),
+            color = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ) {
-            var date = Date.from(Instant.now()).toString().subSequence(0, 10).toString()
-            Text(text = date, modifier = Modifier.padding(20.dp, 0.dp))
-            IconButton(
-                modifier = Modifier.padding(20.dp, 0.dp),
-                onClick = { /*TODO*/ }
+            Row(
+                modifier = Modifier.fillMaxWidth().height(20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(imageVector = Icons.Rounded.DateRange, "")
+                var date = Date.from(Instant.now()).toString().subSequence(0, 10).toString()
+                Text(text = date, modifier = Modifier.padding(20.dp, 0.dp))
+                IconButton(
+                    modifier = Modifier.padding(20.dp, 0.dp),
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(imageVector = Icons.Rounded.DateRange, "")
+                }
             }
         }
     }
+
 
 }
 
