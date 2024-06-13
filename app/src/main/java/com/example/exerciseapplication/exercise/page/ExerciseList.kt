@@ -23,7 +23,7 @@ fun ExerciseList(modifier: Modifier = Modifier) {
                 Box(
                     modifier = Modifier.padding(0.dp, 1.dp)
                 ) {
-                    ExerciseRow()
+                    ExerciseRow(exerciseItem = ExerciseItem())
                 }
 
             }

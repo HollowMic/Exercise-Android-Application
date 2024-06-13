@@ -34,7 +34,7 @@ fun DateRow(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                var date = Date.from(Instant.now()).toString().subSequence(0, 10).toString()
+                val date = Date.from(Instant.now()).toString().subSequence(0, 10).toString()
                 Text(text = date, modifier = Modifier.padding(20.dp, 0.dp))
                 IconButton(
                     modifier = Modifier.padding(20.dp, 0.dp),
@@ -45,8 +45,6 @@ fun DateRow(modifier: Modifier = Modifier) {
             }
         }
     }
-
-
 }
 
 @Composable

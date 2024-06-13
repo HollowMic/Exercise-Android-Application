@@ -32,7 +32,8 @@ import com.example.exerciseapplication.ui.theme.PurpleTertiaryDark
 
 @Composable
 fun ExerciseRow(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    exerciseItem: ExerciseItem
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf(false) }
@@ -96,8 +97,11 @@ fun ExerciseRow(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp)
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.End
                 ) {
+                    Counter(startValue = 32.5f)
+                    Counter(startValue = 3.0f)
                     Button(onClick = { expanded = !expanded }) {
                         Text(text = stringResource(id = R.string.save))
                     }
@@ -111,5 +115,5 @@ fun ExerciseRow(
 @Composable
 @Preview
 fun ExerciseRowPreview() {
-    ExerciseRow()
+    ExerciseRow(exerciseItem = ExerciseItem())
 }
