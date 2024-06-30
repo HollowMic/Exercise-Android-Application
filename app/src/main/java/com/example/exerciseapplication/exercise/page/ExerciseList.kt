@@ -24,7 +24,7 @@ fun ExerciseList(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewM
                 Box(
                     modifier = Modifier.padding(0.dp, 1.dp)
                 ) {
-                    ExerciseRow(exerciseItem = ExerciseItem())
+                    ExerciseRow(exerciseItem = ExerciseItem(), exerciseViewModel = exerciseViewModel)
                 }
 
             }

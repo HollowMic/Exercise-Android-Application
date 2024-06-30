@@ -10,6 +10,7 @@ import com.example.exerciseapplication.data.entity.Exercise
 import com.example.exerciseapplication.data.repositories.ExerciseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 
 class ExerciseViewModel(
@@ -39,6 +40,15 @@ class ExerciseViewModel(
 //            val valReader = JsonReader(InputStreamReader(valFile))
             // Put data from file into viewModel using some read function.
         }
+    }
+
+    fun addExercise(name: String) = viewModelScope.launch {
+        val exercise = Exercise(UUID.randomUUID(), name, 3, 10)
+        exerciseRepository.addExercise(exercise)
+    }
+
+    fun deleteAllExercises() = viewModelScope.launch {
+        exerciseRepository.removeAllExercises()
     }
 
     companion object {

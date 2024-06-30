@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,13 +28,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.exerciseapplication.R
+import com.example.exerciseapplication.exercise.ExerciseViewModel
 import com.example.exerciseapplication.ui.theme.PurpleTertiaryDark
 
 @Composable
 fun ExerciseRow(
     modifier: Modifier = Modifier,
-    exerciseItem: ExerciseItem
+    exerciseItem: ExerciseItem,
+    exerciseViewModel: ExerciseViewModel
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf(false) }
@@ -107,6 +110,14 @@ fun ExerciseRow(
                         .padding(10.dp),
                     horizontalArrangement = Arrangement.End
                 ) {
+                    val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
+                    Text(text = exerciseList.value.size.toString())
+                    Button(onClick = { exerciseViewModel.addExercise("new Exercise") }) {
+                        Text(text = "add")
+                    }
+                    Button(onClick = { exerciseViewModel.deleteAllExercises() }) {
+                        Text(text = "remove")
+                    }
                     Counter(startValue = 32.5f)
                     Counter(startValue = 3.0f)
                     Button(onClick = { expanded = !expanded }) {
@@ -122,5 +133,8 @@ fun ExerciseRow(
 @Composable
 @Preview
 fun ExerciseRowPreview() {
-    ExerciseRow(exerciseItem = ExerciseItem())
+    val exerciseViewModel: ExerciseViewModel = viewModel(
+        factory = ExerciseViewModel.Factory
+    )
+    ExerciseRow(exerciseItem = ExerciseItem(), exerciseViewModel = exerciseViewModel)
 }

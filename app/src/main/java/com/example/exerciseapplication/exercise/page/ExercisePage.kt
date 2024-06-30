@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +41,8 @@ fun ExercisePageContents(modifier: Modifier, exerciseViewModel: ExerciseViewMode
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
+            val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
+            Text(text = exerciseList.value.size.toString())
             DateRow(modifier, exerciseViewModel)
             ExerciseList(modifier, exerciseViewModel)
         }
@@ -51,5 +55,7 @@ fun ExercisePageContentsPreview() {
     val exerciseViewModel: ExerciseViewModel = viewModel(
         factory = ExerciseViewModel.Factory
     )
-    ExercisePageContents(modifier = Modifier.height(1000.dp).width(400.dp), exerciseViewModel = exerciseViewModel)
+    ExercisePageContents(modifier = Modifier
+        .height(1000.dp)
+        .width(400.dp), exerciseViewModel = exerciseViewModel)
 }
