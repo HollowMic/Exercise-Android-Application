@@ -9,9 +9,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.exerciseapplication.exercise.ExerciseViewModel
 
 @Composable
-fun ExerciseList(modifier: Modifier = Modifier) {
+fun ExerciseList(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewModel) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Button
@@ -37,6 +38,12 @@ fun ExerciseRow(
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf(false) }
+    fun toggleExpanded() {
+        expanded = !expanded
+        if (expanded) {
+            selected = true
+        }
+    }
     Surface(
         color = PurpleTertiaryDark
     ) {
@@ -84,12 +91,12 @@ fun ExerciseRow(
 
                 IconButton(
                     modifier = Modifier.padding(10.dp, 0.dp),
-                    onClick = { expanded = !expanded }
+                    onClick = { toggleExpanded() }
                 ) {
                     if (expanded) {
                         Icon(imageVector = Icons.Rounded.KeyboardArrowDown, contentDescription = "")
                     } else {
-                        Icon(imageVector = Icons.Rounded.KeyboardArrowLeft, contentDescription = "")
+                        Icon(imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft, contentDescription = "")
                     }
                 }
             }

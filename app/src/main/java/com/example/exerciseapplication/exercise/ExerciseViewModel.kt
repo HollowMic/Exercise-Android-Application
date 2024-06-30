@@ -1,16 +1,22 @@
 package com.example.exerciseapplication.exercise
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.exerciseapplication.ExerciseApplication
+import com.example.exerciseapplication.data.entity.Exercise
+import com.example.exerciseapplication.data.repositories.ExerciseRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 
-class ExerciseViewModel(context: Context): ViewModel() {
+class ExerciseViewModel(
+    private val exerciseRepository: ExerciseRepository
+): ViewModel() {
+    val exercises: Flow<List<Exercise>> = exerciseRepository.exercises
+
 
     init {
         viewModelScope.launch {
@@ -44,7 +50,7 @@ class ExerciseViewModel(context: Context): ViewModel() {
             ): T {
                 val application = checkNotNull(extras[APPLICATION_KEY])
                 return ExerciseViewModel(
-                    (application as ExerciseApplication)
+                    (application as ExerciseApplication).exerciseRepository
                 ) as T
             }
         }

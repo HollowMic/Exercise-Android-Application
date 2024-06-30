@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,11 +29,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.exerciseapplication.exercise.ExerciseViewModel
 import com.example.exerciseapplication.utils.DateUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateRow(modifier: Modifier = Modifier) {
+fun DateRow(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewModel) {
     Box {
 
         var expanded by remember { mutableStateOf(false) }
@@ -87,10 +88,7 @@ fun DateRow(modifier: Modifier = Modifier) {
                     ) {
                         DatePicker(
                             state = dateState,
-                            dateFormatter = DatePickerFormatter(
-                                selectedDateSkeleton = "EE, dd MMM, yyyy",
-                            ),
-                        )
+                            )
                     }
                 }
             }
@@ -103,5 +101,8 @@ fun DateRow(modifier: Modifier = Modifier) {
 @Composable
 @Preview
 fun DateRowPreview() {
-    DateRow(Modifier)
+    val exerciseViewModel: ExerciseViewModel = viewModel(
+        factory = ExerciseViewModel.Factory
+    )
+    DateRow(Modifier, exerciseViewModel)
 }
