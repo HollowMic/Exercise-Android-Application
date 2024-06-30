@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.exerciseapplication.R
+import com.example.exerciseapplication.exercise.ExerciseItem
 import com.example.exerciseapplication.exercise.ExerciseViewModel
 import com.example.exerciseapplication.ui.theme.PurpleTertiaryDark
 
@@ -112,9 +113,9 @@ fun ExerciseRow(
                 ) {
                     val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
                     Text(text = exerciseList.value.size.toString())
-                    Button(onClick = { exerciseViewModel.addExercise("new Exercise") }) {
-                        Text(text = "add")
-                    }
+//                    Button(onClick = { exerciseViewModel.addExercise("new Exercise") }) {
+//                        Text(text = "add")
+//                    }
                     Button(onClick = { exerciseViewModel.deleteAllExercises() }) {
                         Text(text = "remove")
                     }

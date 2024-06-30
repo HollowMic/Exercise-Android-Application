@@ -6,9 +6,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,14 +30,31 @@ fun ExercisePage(
     navigate: () -> Unit,
     openDrawer: () -> Unit
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+    fun showingDialog() {
+        showDialog = true
+    }
+    fun hideDialog() {
+        showDialog = false
+    }
+
     Page(
         pageName = R.string.exercise_page_title,
         navigate = navigate,
         openDrawer = openDrawer,
+        actions = listOf {
+            IconButton(onClick = { showingDialog() }) {
+                Icon(imageVector = Icons.Rounded.Add, contentDescription = "")
+            }
+        }
     ) {
         val exerciseViewModel: ExerciseViewModel = viewModel(
             factory = ExerciseViewModel.Factory
         )
+
+        if (showDialog) {
+            AddExerciseOptionDialog(modifier = it, exerciseViewModel = exerciseViewModel, closeFunction = {hideDialog()})
+        }
         ExercisePageContents(modifier = it, exerciseViewModel = exerciseViewModel)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.exerciseapplication.exercise.page
+package com.example.exerciseapplication.exercise
 
 class ExerciseItem(
     private var name: String = "Weight",

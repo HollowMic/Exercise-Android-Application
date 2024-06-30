@@ -6,4 +6,5 @@
     <string name="exercise_page_title">Gym Page</string>
     <string name="item_default_text">Default text</string>
     <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

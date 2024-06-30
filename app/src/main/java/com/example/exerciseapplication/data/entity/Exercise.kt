@@ -9,6 +9,7 @@ import java.util.UUID
 data class Exercise (
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     @ColumnInfo(name = "exercise_name") val exerciseName: String,
+    @ColumnInfo(name = "default_weight_amount") val defaultWeightAmount: Float,
     @ColumnInfo(name = "exercise_default_sets") val exerciseSetDefault: Int,
     @ColumnInfo(name = "exercise_default_reps") val exerciseRepDefault: Int,
 )

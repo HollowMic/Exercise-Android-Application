@@ -21,29 +21,11 @@ class ExerciseViewModel(
 
     init {
         viewModelScope.launch {
-//            val fileDirectory = context.filesDir.absolutePath + "/file.json"
-//            println(fileDirectory)
-//            println("isdjoiadjiosajdioa")
-////            withContext(Dispatchers.IO) {
-////                File(fileDirectory).createNewFile()
-////            }
-//            val valFile = context.openFileInput(fileDirectory)
-////            var valFile: FileInputStream
-////            try {
-////                valFile = context.openFileInput("file.json")
-////            } catch (e: FileNotFoundException) {
-////                withContext(Dispatchers.IO) {
-////
-////                }
-////                valFile = context.openFileInput("file.json")
-////            }
-//            val valReader = JsonReader(InputStreamReader(valFile))
-            // Put data from file into viewModel using some read function.
         }
     }
 
-    fun addExercise(name: String) = viewModelScope.launch {
-        val exercise = Exercise(UUID.randomUUID(), name, 3, 10)
+    fun addExercise(name: String, weight: Float, numOfReps: Int) = viewModelScope.launch {
+        val exercise = Exercise(UUID.randomUUID(), name, weight, numOfReps, 10)
         exerciseRepository.addExercise(exercise)
     }
 
