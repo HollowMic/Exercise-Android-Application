@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,24 +28,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import java.time.Instant
-import java.util.Date
+import com.example.exerciseapplication.utils.DateUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRow(modifier: Modifier = Modifier) {
     Box {
+
         var expanded by remember { mutableStateOf(false) }
         fun toggleExpanded() {
             expanded = !expanded
         }
+        val dateState = rememberDatePickerState()
+        val millisToLocalDate = dateState.selectedDateMillis?.let {
+            DateUtils().convertMillisToLocalDate(it)
+        }
+        val dateToString = millisToLocalDate?.let {
+            DateUtils().dateToString(millisToLocalDate)
+        } ?: "Choose Date"
+//        Date.from(Instant.now()).toString().subSequence(0, 10).toString()
+
+
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(if (expanded) 570.dp else 60.dp)
+                .height(if (expanded) 600.dp else 60.dp)
                 .animateContentSize(),
             color = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -57,11 +66,10 @@ fun DateRow(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
-//                        .padding(0.dp, 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    val date = Date.from(Instant.now()).toString().subSequence(0, 10).toString()
+                    val date = dateToString
                     Text(text = date, modifier = Modifier.padding(20.dp, 0.dp))
                     IconButton(
                         modifier = Modifier.padding(20.dp, 0.dp),
@@ -70,14 +78,19 @@ fun DateRow(modifier: Modifier = Modifier) {
                         Icon(imageVector = Icons.Rounded.DateRange, "")
                     }
                 }
-                val dateState = rememberDatePickerState()
+
                 if (expanded) {
                     Card(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.secondaryContainer)
                             .padding(10.dp)
                     ) {
-                        DatePicker(state = dateState)
+                        DatePicker(
+                            state = dateState,
+                            dateFormatter = DatePickerFormatter(
+                                selectedDateSkeleton = "EE, dd MMM, yyyy",
+                            ),
+                        )
                     }
                 }
             }
