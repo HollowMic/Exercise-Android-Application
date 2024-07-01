@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.exerciseapplication.exercise.ExerciseItem
 import com.example.exerciseapplication.exercise.ExerciseViewModel
 
 @Composable
@@ -33,7 +32,7 @@ fun ExerciseList(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewM
                     Box(
                         modifier = Modifier.padding(0.dp, 1.dp)
                     ) {
-                        ExerciseRow(exerciseItem = ExerciseItem(), exerciseViewModel = exerciseViewModel)
+                        ExerciseRow(exerciseItem = it, exerciseViewModel = exerciseViewModel)
                     }
                 }
 

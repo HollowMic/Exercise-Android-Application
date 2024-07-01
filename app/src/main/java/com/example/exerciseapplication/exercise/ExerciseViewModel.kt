@@ -24,8 +24,8 @@ class ExerciseViewModel(
         }
     }
 
-    fun addExercise(name: String, weight: Float, numOfReps: Int) = viewModelScope.launch {
-        val exercise = Exercise(UUID.randomUUID(), name, weight, numOfReps, 10)
+    fun addExercise(name: String, weight: Float, numOfSets: Int,  numOfReps: Int) = viewModelScope.launch {
+        val exercise = Exercise(UUID.randomUUID(), name, weight, numOfSets, numOfReps)
         exerciseRepository.addExercise(exercise)
     }
 

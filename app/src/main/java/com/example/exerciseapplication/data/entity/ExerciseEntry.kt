@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import java.util.Date
 import java.util.UUID
 
 @Entity(tableName = "exerciseEntry")
@@ -13,6 +14,7 @@ data class ExerciseEntry (
         parentColumn = "id",
         entityColumn = "exerciseTypeId"
     )
+    @ColumnInfo(name = "date") val date: Date,
     @ColumnInfo(name = "exercise_sets") val exerciseSetDefault: Int,
     @ColumnInfo(name = "exercise_reps") val exerciseRepDefault: Int,
 )

@@ -53,7 +53,7 @@ fun ExercisePage(
         )
 
         if (showDialog) {
-            AddExerciseOptionDialog(modifier = it, exerciseViewModel = exerciseViewModel, closeFunction = {hideDialog()})
+            AddExerciseOptionDialog(modifier = it, exerciseViewModel = exerciseViewModel, closeFunction = { hideDialog() })
         }
         ExercisePageContents(modifier = it, exerciseViewModel = exerciseViewModel)
     }

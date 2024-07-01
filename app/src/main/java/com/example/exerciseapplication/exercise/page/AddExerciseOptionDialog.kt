@@ -34,10 +34,12 @@ fun AddExerciseOptionDialog(modifier: Modifier = Modifier, exerciseViewModel: Ex
 
         var name by remember { mutableStateOf("") }
         var weight by remember { mutableFloatStateOf(0.0f) }
-        var numOfReps by remember { mutableIntStateOf(3) }
+        var numOfSets by remember { mutableIntStateOf(3) }
+        var numOfReps by remember { mutableIntStateOf(10) }
+
 
         fun saveExercise() {
-            exerciseViewModel.addExercise(name, weight, numOfReps)
+            exerciseViewModel.addExercise(name, weight, numOfSets, numOfReps)
             closeFunction()
         }
 
@@ -56,6 +58,11 @@ fun AddExerciseOptionDialog(modifier: Modifier = Modifier, exerciseViewModel: Ex
                 TextField(value = weight.toString(), onValueChange = {
                     try {
                         weight = it.toFloat()
+                    } catch (_: NumberFormatException) {}
+                })
+                TextField(value = numOfSets.toString(), onValueChange = {
+                    try {
+                        numOfSets = it.toInt()
                     } catch (_: NumberFormatException) {}
                 })
                 TextField(value = numOfReps.toString(), onValueChange = {

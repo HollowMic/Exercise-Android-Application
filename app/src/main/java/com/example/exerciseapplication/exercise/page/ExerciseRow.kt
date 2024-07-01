@@ -25,19 +25,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.exerciseapplication.R
-import com.example.exerciseapplication.exercise.ExerciseItem
+import com.example.exerciseapplication.data.entity.Exercise
 import com.example.exerciseapplication.exercise.ExerciseViewModel
 import com.example.exerciseapplication.ui.theme.PurpleTertiaryDark
+import java.util.UUID
 
 @Composable
 fun ExerciseRow(
     modifier: Modifier = Modifier,
-    exerciseItem: ExerciseItem,
+    exerciseItem: Exercise,
     exerciseViewModel: ExerciseViewModel
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -54,7 +54,7 @@ fun ExerciseRow(
         Column(
             modifier = Modifier
                 .animateContentSize()
-                .height(if (expanded) 120.dp else 60.dp)
+                .height(if (expanded) 130.dp else 60.dp)
                 .fillMaxWidth(),
         ) {
             Row(
@@ -89,7 +89,7 @@ fun ExerciseRow(
                         modifier = Modifier
                             .fillMaxHeight()
                             .padding(10.dp, 10.dp),
-                        text = stringResource(R.string.item_default_text)
+                        text = exerciseItem.exerciseName
                     )
                 }
 
@@ -109,7 +109,8 @@ fun ExerciseRow(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
                     Text(text = exerciseList.value.size.toString())
@@ -119,11 +120,12 @@ fun ExerciseRow(
                     Button(onClick = { exerciseViewModel.deleteAllExercises() }) {
                         Text(text = "remove")
                     }
-                    Counter(startValue = 32.5f)
-                    Counter(startValue = 3.0f)
-                    Button(onClick = { expanded = !expanded }) {
-                        Text(text = stringResource(id = R.string.save))
-                    }
+                    Counter(startValue = exerciseItem.defaultWeightAmount)
+                    Counter(startValue = exerciseItem.exerciseSetDefault.toFloat())
+                    Counter(startValue = exerciseItem.exerciseRepDefault.toFloat())
+//                    Button(onClick = { expanded = !expanded }) {
+//                        Text(text = stringResource(id = R.string.save))
+//                    }
                 }
             }
         }
@@ -137,5 +139,12 @@ fun ExerciseRowPreview() {
     val exerciseViewModel: ExerciseViewModel = viewModel(
         factory = ExerciseViewModel.Factory
     )
-    ExerciseRow(exerciseItem = ExerciseItem(), exerciseViewModel = exerciseViewModel)
+    val exercise = Exercise(
+        id = UUID.randomUUID(),
+        exerciseName = "Test Exercise",
+        defaultWeightAmount = 37.5f,
+        exerciseRepDefault = 10,
+        exerciseSetDefault = 3
+    )
+    ExerciseRow(exerciseItem = exercise, exerciseViewModel = exerciseViewModel)
 }
