@@ -54,22 +54,38 @@ fun AddExerciseOptionDialog(modifier: Modifier = Modifier, exerciseViewModel: Ex
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                TextField(value = name, onValueChange = { name = it })
-                TextField(value = weight.toString(), onValueChange = {
-                    try {
-                        weight = it.toFloat()
-                    } catch (_: NumberFormatException) {}
-                })
-                TextField(value = numOfSets.toString(), onValueChange = {
-                    try {
-                        numOfSets = it.toInt()
-                    } catch (_: NumberFormatException) {}
-                })
-                TextField(value = numOfReps.toString(), onValueChange = {
-                    try {
-                        numOfReps = it.toInt()
-                    } catch (_: NumberFormatException) {}
-                })
+                TextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Exercise Name") }
+                )
+                TextField(
+                    value = weight.toString(),
+                    label = { Text("Weight Amount (kg)") },
+                    onValueChange = {
+                        try {
+                            weight = it.toFloat()
+                        } catch (_: NumberFormatException) {}
+                    }
+                )
+                TextField(
+                    value = numOfSets.toString(),
+                    label = { Text("Number of sets") },
+                    onValueChange = {
+                        try {
+                            numOfSets = it.toInt()
+                        } catch (_: NumberFormatException) {}
+                    }
+                )
+                TextField(
+                    value = numOfReps.toString(),
+                    label = { Text("Number of Repetitions") },
+                    onValueChange = {
+                        try {
+                            numOfReps = it.toInt()
+                        } catch (_: NumberFormatException) {}
+                    }
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween

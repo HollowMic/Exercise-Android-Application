@@ -10,9 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,8 +64,8 @@ fun ExercisePageContents(modifier: Modifier, exerciseViewModel: ExerciseViewMode
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-            val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
-            Text(text = exerciseList.value.size.toString())
+//            val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
+//            Text(text = exerciseList.value.size.toString())
             DateRow(modifier, exerciseViewModel)
             ExerciseList(modifier, exerciseViewModel)
         }
