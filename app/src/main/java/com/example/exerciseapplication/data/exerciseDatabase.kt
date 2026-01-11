@@ -4,16 +4,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.exerciseapplication.data.dao.ExerciseDao
+import com.example.exerciseapplication.data.dao.WorkoutDao
 import com.example.exerciseapplication.data.entity.Exercise
+import com.example.exerciseapplication.data.entity.Workout
+
 
 @Database(
-    version = 1,
-    entities = [Exercise::class]
+    version = 2,
+    entities = [Exercise::class, Workout::class]
 )
-
+@TypeConverters(DateConverters::class)
 abstract class ExerciseDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
+    abstract fun workoutDao(): WorkoutDao
 
     companion object {
         @Volatile

@@ -20,11 +20,6 @@ fun ExerciseList(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewM
     ) {
         val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
         Column {
-//            Box(
-//                modifier = Modifier.padding(0.dp, 1.dp)
-//            ) {
-//                ExerciseRow(exerciseItem = ExerciseItem(), exerciseViewModel = exerciseViewModel)
-//            }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
             ) {
