@@ -12,5 +12,6 @@ data class Exercise (
     @ColumnInfo(name = "default_weight_amount") val defaultWeightAmount: Float,
     @ColumnInfo(name = "exercise_default_sets") val exerciseSetDefault: Int,
     @ColumnInfo(name = "exercise_default_reps") val exerciseRepDefault: Int,
+    @ColumnInfo(name = "in_current_rotation") val inCurrentRotation: Boolean,
 )
 

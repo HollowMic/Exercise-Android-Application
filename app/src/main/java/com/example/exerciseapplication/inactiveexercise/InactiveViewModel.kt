@@ -1,4 +1,4 @@
-package com.example.exerciseapplication.exercise
+package com.example.exerciseapplication.inactiveexercise
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,31 +10,19 @@ import com.example.exerciseapplication.data.entity.Exercise
 import com.example.exerciseapplication.data.repositories.ExerciseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.util.UUID
 
-
-class ExerciseViewModel(
+class InactiveViewModel(
     private val exerciseRepository: ExerciseRepository
 ): ViewModel() {
-    val exercises: Flow<List<Exercise>> = exerciseRepository.exercises
-
+    val inactiveExercises: Flow<List<Exercise>> = exerciseRepository.inactiveExercises
 
     init {
         viewModelScope.launch {
         }
     }
 
-    fun addExercise(name: String, weight: Float, numOfSets: Int,  numOfReps: Int) = viewModelScope.launch {
-        val exercise = Exercise(UUID.randomUUID(), name, weight, numOfSets, numOfReps, true)
-        exerciseRepository.addExercise(exercise)
-    }
-
-    fun deleteAllExercises() = viewModelScope.launch {
-        exerciseRepository.removeAllExercises()
-    }
-
-    fun removeExercise(exerciseItem: Exercise) = viewModelScope.launch {
-        exerciseRepository.deactivateExercise(exerciseItem.id)
+    fun reactivateExercise(exerciseItem: Exercise) = viewModelScope.launch {
+        exerciseRepository.reactivateExercise(exerciseItem.id)
     }
 
     companion object {
@@ -45,7 +33,7 @@ class ExerciseViewModel(
                 extras: CreationExtras
             ): T {
                 val application = checkNotNull(extras[APPLICATION_KEY])
-                return ExerciseViewModel(
+                return InactiveViewModel(
                     (application as ExerciseApplication).exerciseRepository
                 ) as T
             }

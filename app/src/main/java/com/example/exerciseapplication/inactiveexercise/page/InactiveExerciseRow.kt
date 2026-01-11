@@ -1,4 +1,4 @@
-package com.example.exerciseapplication.exercise.page
+package com.example.exerciseapplication.inactiveexercise.page
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
@@ -27,20 +27,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.exerciseapplication.R
 import com.example.exerciseapplication.data.entity.Exercise
-import com.example.exerciseapplication.exercise.ExerciseViewModel
+import com.example.exerciseapplication.exercise.page.Counter
+import com.example.exerciseapplication.inactiveexercise.InactiveViewModel
 import com.example.exerciseapplication.ui.theme.PurpleTertiaryDark
-import java.util.UUID
 
 @Composable
-fun ExerciseRow(
+fun InactiveExerciseRow(
     modifier: Modifier = Modifier,
     exerciseItem: Exercise,
-    exerciseViewModel: ExerciseViewModel
+    inactiveViewModel: InactiveViewModel
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf(false) }
@@ -128,7 +126,7 @@ fun ExerciseRow(
                                 1 -> buttonColor = Color(0xFF880000)
                                 2 -> buttonColor = Color(0xFFFF0000)
                                 3 -> {
-                                    exerciseViewModel.removeExercise(exerciseItem)
+                                    inactiveViewModel.reactivateExercise(exerciseItem)
                                     removeCounter = 0
                                 }
                             }
@@ -137,7 +135,7 @@ fun ExerciseRow(
                             containerColor = buttonColor
                         )
                     ) {
-                        Text(text = "Remove")
+                        Text(text = "Readd")
                     }
                     Counter(startValue = exerciseItem.defaultWeightAmount)
                     Counter(startValue = exerciseItem.exerciseSetDefault.toFloat())
@@ -150,21 +148,4 @@ fun ExerciseRow(
         }
     }
 
-}
-
-@Composable
-@Preview
-fun ExerciseRowPreview() {
-    val exerciseViewModel: ExerciseViewModel = viewModel(
-        factory = ExerciseViewModel.Factory
-    )
-    val exercise = Exercise(
-        id = UUID.randomUUID(),
-        exerciseName = "Test Exercise",
-        defaultWeightAmount = 37.5f,
-        exerciseRepDefault = 10,
-        exerciseSetDefault = 3,
-        inCurrentRotation = true
-    )
-    ExerciseRow(exerciseItem = exercise, exerciseViewModel = exerciseViewModel)
 }

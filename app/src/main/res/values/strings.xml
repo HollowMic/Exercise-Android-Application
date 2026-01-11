@@ -2,8 +2,10 @@
     <string name="app_name">Exercise Application</string>
     <string name="menu_icon_description" />
     <string name="back_button_description" />
-    <string name="route_exercise">ExersicePage</string>
+    <string name="route_exercise">ExercisePage</string>
+    <string name="route_inactive">route_inactive</string>
     <string name="exercise_page_title">Gym Page</string>
+    <string name="inactive_exercise_page_title">Old Exercises</string>
     <string name="item_default_text">Default text</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
