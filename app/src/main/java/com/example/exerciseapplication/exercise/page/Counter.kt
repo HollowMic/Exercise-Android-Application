@@ -14,10 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,36 +22,36 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Counter(
     modifier: Modifier = Modifier,
-    startValue: Float = 0.0f,
+    value: Float,
+    onIncrement: () -> Unit,
+    onDecrement: () -> Unit
 ) {
     Box(modifier = modifier){
-
-        var value by remember { mutableStateOf(startValue.toString()) }
 
         Row(
             modifier = Modifier.padding(5.dp, 0.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
-            value = startValue.toString()
-            if (startValue.compareTo(startValue.toInt()) == 0) {
-                value = startValue.toInt().toString()
+            var valueString = value.toString()
+            if (value.compareTo(value.toInt()) == 0) {
+                valueString = value.toInt().toString()
             }
             Text(
                 modifier = Modifier,
-                text = value
+                text = valueString
             )
             Column(
                 modifier = Modifier.height(40.dp)
             ) {
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = onIncrement,
                     modifier = Modifier.size(20.dp)
                 ) {
                     Icon(imageVector = Icons.Rounded.KeyboardArrowUp, contentDescription = "")
                 }
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = onDecrement,
                     modifier = Modifier.size(20.dp)
                 ) {
                     Icon(imageVector = Icons.Rounded.KeyboardArrowDown, contentDescription = "")
@@ -68,5 +64,5 @@ fun Counter(
 @Preview
 @Composable
 fun CounterPreview() {
-    Counter()
+    Counter(Modifier, 3.4.toFloat(), {}, {})
 }

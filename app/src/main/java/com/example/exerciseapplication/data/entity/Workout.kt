@@ -17,7 +17,12 @@ import java.util.UUID
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index("exerciseId")]
+    indices = [
+        Index("exerciseId"),
+        Index(
+            value = ["exerciseId", "performedDate"],
+            unique = true
+    )]
 )
 data class Workout(
     @PrimaryKey val id: UUID,

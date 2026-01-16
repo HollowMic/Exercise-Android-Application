@@ -36,7 +36,6 @@ class WorkoutLogViewModel(
     }
     private var exerciseToAddTo: Exercise = Exercise(UUID.randomUUID(), "", 0.toFloat(), 0, 0, false)
     fun showAddWorkout(exercise: Exercise) {
-        println(exercise.exerciseName)
         showDialog = true
         exerciseToAddTo = exercise
     }
@@ -63,7 +62,7 @@ class WorkoutLogViewModel(
                 val application = checkNotNull(extras[APPLICATION_KEY])
                 return WorkoutLogViewModel(
                     (application as ExerciseApplication).workoutRepository,
-                    (application as ExerciseApplication).exerciseRepository
+                    (application).exerciseRepository
                 ) as T
             }
         }

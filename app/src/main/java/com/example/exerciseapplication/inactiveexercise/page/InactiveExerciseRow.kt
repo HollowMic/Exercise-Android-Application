@@ -137,9 +137,9 @@ fun InactiveExerciseRow(
                     ) {
                         Text(text = "Readd")
                     }
-                    Counter(startValue = exerciseItem.defaultWeightAmount)
-                    Counter(startValue = exerciseItem.exerciseSetDefault.toFloat())
-                    Counter(startValue = exerciseItem.exerciseRepDefault.toFloat())
+                    Counter(value = exerciseItem.defaultWeightAmount, onIncrement = {}, onDecrement = {})
+                    Counter(value = exerciseItem.exerciseSetDefault.toFloat(), onIncrement = {}, onDecrement = {})
+                    Counter(value = exerciseItem.exerciseRepDefault.toFloat(), onIncrement = {}, onDecrement = {})
 //                    Button(onClick = { expanded = !expanded }) {
 //                        Text(text = stringResource(id = R.string.save))
 //                    }

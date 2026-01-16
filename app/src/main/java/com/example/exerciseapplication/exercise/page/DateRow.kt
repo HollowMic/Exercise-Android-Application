@@ -49,8 +49,7 @@ fun DateRow(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewModel)
         val dateToString = millisToLocalDate?.let {
             DateUtils().dateToString(millisToLocalDate)
         } ?: "Choose Date"
-//        Date.from(Instant.now()).toString().subSequence(0, 10).toString()
-
+        exerciseViewModel.setDate(millisToLocalDate)
 
         Surface(
             modifier = Modifier

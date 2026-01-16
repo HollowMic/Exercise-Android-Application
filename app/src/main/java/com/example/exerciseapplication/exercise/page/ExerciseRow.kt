@@ -2,9 +2,11 @@ package com.example.exerciseapplication.exercise.page
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,12 +45,49 @@ fun ExerciseRow(
     exerciseItem: Exercise,
     exerciseViewModel: ExerciseViewModel
 ) {
+
+    // TODO Move to the ViewModel (use a list or dict by exerciseId)
+    var weightAmount by remember { mutableFloatStateOf(exerciseItem.defaultWeightAmount) }
+    var numOfSets by remember { mutableIntStateOf(exerciseItem.exerciseSetDefault) }
+    var numOfReps by remember { mutableIntStateOf(exerciseItem.exerciseRepDefault) }
+
+    fun increaseWeight() {
+        weightAmount += 0.5.toFloat()
+    }
+    fun decreaseWeight() {
+        weightAmount -= 0.5.toFloat()
+    }
+    fun increaseSets() {
+        numOfSets += 1
+    }
+    fun decreaseSets() {
+        numOfSets -= 1
+    }
+    fun increaseReps() {
+        numOfReps += 1
+    }
+    fun decreaseReps() {
+        numOfReps -= 1
+    }
+
     var expanded by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf(false) }
+    //TODO check if previous workout exists and keep it. Reflect it in the row.
+    if (selected) {
+        exerciseViewModel.addWorkout(exerciseItem, weightAmount, numOfSets, numOfReps)
+    } else {
+        exerciseViewModel.removeWorkout(exerciseItem)
+    }
     fun toggleExpanded() {
         expanded = !expanded
         if (expanded) {
             selected = true
+        }
+    }
+    fun toggleSelect() {
+        selected = !selected
+        if (!selected) {
+            expanded = false
         }
     }
     Surface(
@@ -72,7 +112,7 @@ fun ExerciseRow(
                 ) {
                     IconButton(
                         modifier = Modifier.padding(10.dp, 0.dp),
-                        onClick = { selected = !selected }
+                        onClick = { toggleSelect() }
                     ) {
                         if (selected) {
                             Icon(
@@ -110,40 +150,52 @@ fun ExerciseRow(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .fillMaxSize()
+                        .padding(10.dp, 0.dp),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-//                    val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
-//                    Text(text = exerciseList.value.size.toString())
-//                    Button(onClick = { exerciseViewModel.addExercise("new Exercise") }) {
-//                        Text(text = "add")
-//                    }
-                    var buttonColor by remember { mutableStateOf(Color(0xFF440000)) }
-                    var removeCounter by remember { mutableIntStateOf(0) }
-                    Button(
-                        onClick = {
-                            removeCounter += 1
-                            when (removeCounter) {
-                                1 -> buttonColor = Color(0xFF880000)
-                                2 -> buttonColor = Color(0xFFFF0000)
-                                3 -> {
-                                    exerciseViewModel.removeExercise(exerciseItem)
-                                    removeCounter = 0
-                                }
+//                    Column(
+//                        modifier = Modifier.fillMaxSize(),
+//                        horizontalAlignment = Alignment.End,
+//                    ) {
+                        Box(modifier = Modifier.padding(20.dp, 0.dp)) {
+                            var buttonColor by remember { mutableStateOf(Color(0xFF440000)) }
+                            var removeCounter by remember { mutableIntStateOf(0) }
+                            Button(
+                                onClick = {
+                                    removeCounter += 1
+                                    when (removeCounter) {
+                                        1 -> buttonColor = Color(0xFF880000)
+                                        2 -> buttonColor = Color(0xFFFF0000)
+                                        3 -> {
+                                            exerciseViewModel.removeExercise(exerciseItem)
+                                            removeCounter = 0
+                                        }
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = buttonColor
+                                )
+                            ) {
+                                Text(text = "Remove")
                             }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = buttonColor
-                        )
-                    ) {
-                        Text(text = "Remove")
-                    }
-                    Counter(startValue = exerciseItem.defaultWeightAmount)
-                    Counter(startValue = exerciseItem.exerciseSetDefault.toFloat())
-                    Counter(startValue = exerciseItem.exerciseRepDefault.toFloat())
-//                    Button(onClick = { expanded = !expanded }) {
-//                        Text(text = stringResource(id = R.string.save))
+                        }
+                        Box {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxSize()
+                                    .padding(10.dp),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Counter(value = weightAmount, onIncrement = { increaseWeight() }, onDecrement = { decreaseWeight() })
+                                Counter(value = numOfSets.toFloat(), onIncrement = { increaseSets() }, onDecrement = { decreaseSets() })
+                                Counter(value = numOfReps.toFloat(), onIncrement = { increaseReps() }, onDecrement = { decreaseReps() })
+                            }
+                        }
+
 //                    }
                 }
             }
