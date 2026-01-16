@@ -15,6 +15,8 @@ import com.example.exerciseapplication.exercise.ExerciseViewModel
 import com.example.exerciseapplication.exercise.page.ExercisePage
 import com.example.exerciseapplication.inactiveexercise.InactiveViewModel
 import com.example.exerciseapplication.inactiveexercise.page.InactivePage
+import com.example.exerciseapplication.workoutlog.WorkoutLogViewModel
+import com.example.exerciseapplication.workoutlog.page.WorkoutLogPage
 import kotlinx.coroutines.launch
 
 @Composable
@@ -37,9 +39,10 @@ fun Route() {
     ) {
         Row {
 
-
             val exercisePageString = stringResource(R.string.route_exercise)
+            val workoutLogPageString = stringResource(R.string.route_workout_log)
             val inactivePageString = stringResource(R.string.route_inactive)
+
             NavHost(navController = navController, startDestination = exercisePageString) {
                 composable(exercisePageString) { backStackEntry ->
                     val exerciseViewModel: ExerciseViewModel = viewModel(
@@ -50,6 +53,17 @@ fun Route() {
                         navigate = {},
                         openDrawer = { coroutineScope.launch { drawerState.open() } },
                         exerciseViewModel = exerciseViewModel
+                    )
+                }
+                composable(workoutLogPageString) { backStackEntry ->
+                    val workoutLogViewModel: WorkoutLogViewModel = viewModel(
+                        backStackEntry,
+                        factory = WorkoutLogViewModel.Factory,
+                    )
+                    WorkoutLogPage(
+                        navigate = {},
+                        openDrawer = { coroutineScope.launch { drawerState.open() } },
+                        workoutLogViewModel = workoutLogViewModel
                     )
                 }
                 composable(inactivePageString) { backStackEntry ->

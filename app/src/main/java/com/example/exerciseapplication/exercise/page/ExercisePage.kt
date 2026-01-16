@@ -63,8 +63,6 @@ fun ExercisePageContents(modifier: Modifier, exerciseViewModel: ExerciseViewMode
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-//            val exerciseList = exerciseViewModel.exercises.collectAsState(initial = emptyList())
-//            Text(text = exerciseList.value.size.toString())
             DateRow(modifier, exerciseViewModel)
             ExerciseList(modifier, exerciseViewModel)
         }

@@ -35,16 +35,28 @@ fun AppDrawer(
             }
         )
         NavigationDrawerItem(
-                label = { Text(text = stringResource(id = R.string.inactive_exercise_page_title)) },
-        selected = true,
-        onClick = {
-            pressNavBarOption(
-                navController,
-                coroutineScope,
-                drawerState,
-                context.resources.getString(R.string.route_inactive)
-            )
-        }
+            label = { Text(text = stringResource(id = R.string.workout_log_page_title)) },
+            selected = true,
+            onClick = {
+                pressNavBarOption(
+                    navController,
+                    coroutineScope,
+                    drawerState,
+                    context.resources.getString(R.string.route_workout_log)
+                )
+            }
+        )
+        NavigationDrawerItem(
+            label = { Text(text = stringResource(id = R.string.inactive_exercise_page_title)) },
+            selected = true,
+            onClick = {
+                pressNavBarOption(
+                    navController,
+                    coroutineScope,
+                    drawerState,
+                    context.resources.getString(R.string.route_inactive)
+                )
+            }
         )
     }
 }

@@ -13,6 +13,9 @@ interface WorkoutDao {
     @Insert
     suspend fun insertWorkout(workout: Workout)
 
+    @Query("SELECT * FROM workout")
+    fun getAllWorkouts(): Flow<List<Workout>>
+
     @Query("""
         SELECT * FROM workout
         WHERE performedDate = :date

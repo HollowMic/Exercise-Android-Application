@@ -4,9 +4,11 @@ import androidx.annotation.WorkerThread
 import com.example.exerciseapplication.data.dao.WorkoutDao
 import com.example.exerciseapplication.data.entity.Exercise
 import com.example.exerciseapplication.data.entity.Workout
+import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 class WorkoutRepository(private val workoutDao: WorkoutDao) {
+    val allWorkouts: Flow<List<Workout>> = workoutDao.getAllWorkouts()
 
     @WorkerThread
     suspend fun addWorkout(workout: Workout) {
