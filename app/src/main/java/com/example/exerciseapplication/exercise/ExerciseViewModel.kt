@@ -10,40 +10,60 @@ import com.example.exerciseapplication.data.entity.Exercise
 import com.example.exerciseapplication.data.entity.Workout
 import com.example.exerciseapplication.data.repositories.ExerciseRepository
 import com.example.exerciseapplication.data.repositories.WorkoutRepository
+import com.example.exerciseapplication.exercise.page.WorkoutUiState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ExerciseViewModel(
     private val exerciseRepository: ExerciseRepository,
     private val workoutRepository: WorkoutRepository
 ): ViewModel() {
-    val exercises: Flow<List<Exercise>> = exerciseRepository.exercises
+    val exercises: StateFlow<List<Exercise>> =
+        exerciseRepository.exercises
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5_000),
+                emptyList()
+            )
 
-    init {
-        viewModelScope.launch {
-        }
-    }
+    val allWorkouts: Flow<List<Workout>> = workoutRepository.allWorkouts
 
-    private var date: LocalDate = LocalDate.now()
+    private var _selectedDate = MutableStateFlow(LocalDate.now())
+    val selectedDate: StateFlow<LocalDate> = _selectedDate
 
     fun setDate(newDate: LocalDate?) {
         if (newDate != null) {
-            date = newDate
+            _selectedDate.value = newDate
         }
-        println("set date run: $date")
-        //TODO reset all exercise rows to update on date change.
+    }
+
+    init {
+        viewModelScope.launch {
+            _selectedDate
+                .flatMapLatest { date ->
+                    workoutRepository.getWorkoutsByDate(date)
+                }
+                .stateIn(
+                    viewModelScope,
+                    SharingStarted.WhileSubscribed(5_000),
+                    emptyList()
+                )
+        }
     }
 
     fun addExercise(name: String, weight: Float, numOfSets: Int,  numOfReps: Int) = viewModelScope.launch {
         val exercise = Exercise(UUID.randomUUID(), name, weight, numOfSets, numOfReps, true)
         exerciseRepository.addExercise(exercise)
-    }
-
-    fun deleteAllExercises() = viewModelScope.launch {
-        exerciseRepository.removeAllExercises()
     }
 
     fun removeExercise(exerciseItem: Exercise) = viewModelScope.launch {
@@ -54,7 +74,7 @@ class ExerciseViewModel(
         val workout = Workout(
             UUID.randomUUID(),
             exercise.id,
-            date,
+            selectedDate.value,
             weightAmount = weight,
             sets = numOfSets,
             reps = numOfReps
@@ -63,8 +83,57 @@ class ExerciseViewModel(
     }
 
     fun removeWorkout(exercise: Exercise) = viewModelScope.launch {
-        workoutRepository.removeWorkout(exerciseId = exercise.id, date = date)
+        workoutRepository.removeWorkout(exerciseId = exercise.id, date = selectedDate.value)
     }
+
+
+    fun workoutStateForExercise(
+        exercise: Exercise,
+        workouts: List<Workout>
+    ): WorkoutUiState {
+
+        val workout = workouts
+            .firstOrNull { it.exerciseId == exercise.id && it.performedDate == selectedDate.value }
+
+        return if (workout == null) {
+            WorkoutUiState(
+                reps = exercise.exerciseRepDefault,
+                sets = exercise.exerciseSetDefault,
+                weight = exercise.defaultWeightAmount,
+                existsInDb = false
+            )
+        } else {
+            WorkoutUiState(
+                reps = workout.reps,
+                sets = workout.sets,
+                weight = workout.weightAmount,
+                existsInDb = true
+            )
+        }
+    }
+
+    fun updateWorkout(
+        exercise: Exercise,
+        weight: Float,
+        sets: Int,
+        reps: Int
+    ) {
+        val date = _selectedDate.value
+
+        viewModelScope.launch {
+            workoutRepository.addWorkout(
+                Workout(
+                    id = UUID.randomUUID(),
+                    exerciseId = exercise.id,
+                    performedDate = date,
+                    reps = reps,
+                    sets = sets,
+                    weightAmount = weight
+                )
+            )
+        }
+    }
+
 
     companion object {
         val Factory: ViewModelProvider.Factory = object: ViewModelProvider.Factory {

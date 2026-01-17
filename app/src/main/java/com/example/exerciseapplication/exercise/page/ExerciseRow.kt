@@ -43,53 +43,76 @@ import java.util.UUID
 fun ExerciseRow(
     modifier: Modifier = Modifier,
     exerciseItem: Exercise,
-    exerciseViewModel: ExerciseViewModel
+    exerciseViewModel: ExerciseViewModel,
+    workoutState: WorkoutUiState,
+    onChange: (Float, Int, Int) -> Unit
 ) {
 
-    // TODO Move to the ViewModel (use a list or dict by exerciseId)
-    var weightAmount by remember { mutableFloatStateOf(exerciseItem.defaultWeightAmount) }
-    var numOfSets by remember { mutableIntStateOf(exerciseItem.exerciseSetDefault) }
-    var numOfReps by remember { mutableIntStateOf(exerciseItem.exerciseRepDefault) }
+    val weightAmount by remember(
+        workoutState.weight,
+        workoutState.existsInDb
+    ) {
+        mutableFloatStateOf(workoutState.weight)
+    }
+
+    val numOfSets by remember(
+        workoutState.sets,
+        workoutState.existsInDb
+    ) {
+        mutableIntStateOf(workoutState.sets)
+    }
+
+    val numOfReps by remember(
+        workoutState.reps,
+        workoutState.existsInDb
+    ) {
+        mutableIntStateOf(workoutState.reps)
+    }
 
     fun increaseWeight() {
-        weightAmount += 0.5.toFloat()
+        onChange(weightAmount + 0.5f, numOfSets, numOfReps)
     }
     fun decreaseWeight() {
-        weightAmount -= 0.5.toFloat()
+        onChange(weightAmount - 0.5f, numOfSets, numOfReps)
     }
     fun increaseSets() {
-        numOfSets += 1
+        onChange(weightAmount, numOfSets + 1, numOfReps)
     }
     fun decreaseSets() {
-        numOfSets -= 1
+        onChange(weightAmount, numOfSets - 1, numOfReps)
     }
     fun increaseReps() {
-        numOfReps += 1
+        onChange(weightAmount, numOfSets, numOfReps + 1)
     }
     fun decreaseReps() {
-        numOfReps -= 1
+        onChange(weightAmount, numOfSets, numOfReps - 1)
     }
 
-    var expanded by remember { mutableStateOf(false) }
-    var selected by remember { mutableStateOf(false) }
-    //TODO check if previous workout exists and keep it. Reflect it in the row.
-    if (selected) {
-        exerciseViewModel.addWorkout(exerciseItem, weightAmount, numOfSets, numOfReps)
-    } else {
-        exerciseViewModel.removeWorkout(exerciseItem)
+    var expanded by remember(workoutState.existsInDb) {
+        mutableStateOf(workoutState.existsInDb)
     }
+    var selected by remember(workoutState.existsInDb) {
+        mutableStateOf(workoutState.existsInDb)
+    }
+
     fun toggleExpanded() {
         expanded = !expanded
         if (expanded) {
             selected = true
+            onChange(weightAmount, numOfSets, numOfReps)
+        } else {
+            exerciseViewModel.removeWorkout(exerciseItem)
         }
     }
     fun toggleSelect() {
         selected = !selected
+        onChange(weightAmount, numOfSets, numOfReps)
         if (!selected) {
             expanded = false
+            exerciseViewModel.removeWorkout(exerciseItem)
         }
     }
+
     Surface(
         color = PurpleTertiaryDark
     ) {
@@ -218,5 +241,5 @@ fun ExerciseRowPreview() {
         exerciseSetDefault = 3,
         inCurrentRotation = true
     )
-    ExerciseRow(exerciseItem = exercise, exerciseViewModel = exerciseViewModel)
+//    ExerciseRow(exerciseItem = exercise, exerciseViewModel = exerciseViewModel)
 }

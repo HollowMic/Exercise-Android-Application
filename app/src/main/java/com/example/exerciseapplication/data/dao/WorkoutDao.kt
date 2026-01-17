@@ -39,6 +39,17 @@ interface WorkoutDao {
         date: LocalDate
     )
 
+    @Query("""
+        SELECT * FROM workout
+        WHERE exerciseId = :exerciseId
+          AND performedDate = :date
+        LIMIT 1
+    """)
+    fun getWorkoutForExerciseDate(
+        exerciseId: UUID,
+        date: LocalDate
+    ): Workout?
+
     @Query("SELECT * FROM workout")
     fun getAllWorkouts(): Flow<List<Workout>>
 

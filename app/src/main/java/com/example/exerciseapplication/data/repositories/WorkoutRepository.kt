@@ -21,12 +21,15 @@ class WorkoutRepository(private val workoutDao: WorkoutDao) {
             val result = workoutDao.insertWorkout(workout)
 
             if (result == -1L) {
-                workoutDao.updateWorkout(
-                    workout.id,
-                    workout.reps,
-                    workout.sets,
-                    workout.weightAmount
-                )
+                val oldWorkout = workoutDao.getWorkoutForExerciseDate(workout.exerciseId, workout.performedDate)
+                if (oldWorkout != null) {
+                    workoutDao.updateWorkout(
+                        oldWorkout.id,
+                        workout.reps,
+                        workout.sets,
+                        workout.weightAmount
+                    )
+                }
                 InsertResult.DuplicateDate
             } else {
                 InsertResult.Success
@@ -42,13 +45,13 @@ class WorkoutRepository(private val workoutDao: WorkoutDao) {
     }
 
     @WorkerThread
-    suspend fun getWorkoutsByExercise(exercise: Exercise) {
-        workoutDao.getWorkoutsForExercise(exercise.id)
+    fun getWorkoutsByExercise(exercise: Exercise): Flow<List<Workout>> {
+        return workoutDao.getWorkoutsForExercise(exercise.id)
     }
 
     @WorkerThread
-    suspend fun getWorkoutsByDate(date: LocalDate) {
+    fun getWorkoutsByDate(date: LocalDate): Flow<List<Workout>> =
         workoutDao.getWorkoutsByDate(date)
-    }
+
 
 }
