@@ -11,4 +11,8 @@
     <string name="item_default_text">Default text</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="dialog_excercise_name">Exercise Name</string>
+    <string name="dialog_weight_amount">Weight Amount (kg)</string>
+    <string name="dialog_number_of_set">Number of sets</string>
+    <string name="dialog_number_of_reps">Number of Repetitions</string>
 </resources>

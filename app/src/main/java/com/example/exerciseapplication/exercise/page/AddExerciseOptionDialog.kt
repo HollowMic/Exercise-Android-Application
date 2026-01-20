@@ -3,9 +3,9 @@ package com.example.exerciseapplication.exercise.page
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,11 +22,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.exerciseapplication.R
 import com.example.exerciseapplication.exercise.ExerciseViewModel
 import com.example.exerciseapplication.ui.theme.GreySurface
+import kotlin.math.roundToInt
 
 @Composable
 fun AddExerciseOptionDialog(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewModel, closeFunction: () -> Unit) {
@@ -36,9 +38,16 @@ fun AddExerciseOptionDialog(modifier: Modifier = Modifier, exerciseViewModel: Ex
         var weight by remember { mutableFloatStateOf(0.0f) }
         var numOfSets by remember { mutableIntStateOf(3) }
         var numOfReps by remember { mutableIntStateOf(10) }
+        var weightText by remember { mutableStateOf(weight.toString()) }
+        var numOfSetsText by remember { mutableStateOf(numOfSets.toString()) }
+        var numOfRepsText by remember { mutableStateOf(numOfReps.toString()) }
 
+        fun roundToNearestHalf(value: Float): Float {
+            return (value * 2).roundToInt() / 2f
+        }
 
         fun saveExercise() {
+            weight = roundToNearestHalf(weight)
             exerciseViewModel.addExercise(name, weight, numOfSets, numOfReps)
             closeFunction()
         }
@@ -47,7 +56,7 @@ fun AddExerciseOptionDialog(modifier: Modifier = Modifier, exerciseViewModel: Ex
             shape = ShapeDefaults.Medium,
             colors = CardDefaults.cardColors(containerColor = GreySurface),
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(20.dp, 100.dp)
         ) {
             Column(
@@ -57,37 +66,55 @@ fun AddExerciseOptionDialog(modifier: Modifier = Modifier, exerciseViewModel: Ex
                 TextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Exercise Name") }
+                    label = { Text(stringResource(R.string.dialog_excercise_name)) }
                 )
                 TextField(
-                    value = weight.toString(),
-                    label = { Text("Weight Amount (kg)") },
-                    onValueChange = {
-                        try {
-                            weight = it.toFloat()
-                        } catch (_: NumberFormatException) {}
+                    value = weightText,
+                    label = { Text(stringResource(R.string.dialog_weight_amount)) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal
+                    ),
+                    onValueChange = { input ->
+                        if (input.matches(Regex("""\d*\.?\d*"""))) {
+                            weightText = input
+                            input.toFloatOrNull()?.let {
+                                weight = it
+                            }
+                        }
                     }
                 )
                 TextField(
-                    value = numOfSets.toString(),
-                    label = { Text("Number of sets") },
-                    onValueChange = {
-                        try {
-                            numOfSets = it.toInt()
-                        } catch (_: NumberFormatException) {}
+                    value = numOfSetsText,
+                    label = { Text(stringResource(R.string.dialog_number_of_set)) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal
+                    ),
+                    onValueChange = { input ->
+                        if (input.matches(Regex("""\d*"""))) {
+                            numOfSetsText = input
+                            input.toIntOrNull()?.let {
+                                numOfSets = it
+                            }
+                        }
                     }
                 )
                 TextField(
-                    value = numOfReps.toString(),
-                    label = { Text("Number of Repetitions") },
-                    onValueChange = {
-                        try {
-                            numOfReps = it.toInt()
-                        } catch (_: NumberFormatException) {}
+                    value = numOfRepsText,
+                    label = { Text(stringResource(R.string.dialog_number_of_reps)) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal
+                    ),
+                    onValueChange = { input ->
+                        if (input.matches(Regex("""\d*"""))) {
+                            numOfRepsText = input
+                            input.toIntOrNull()?.let {
+                                numOfReps = it
+                            }
+                        }
                     }
                 )
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp, 0.dp, 0.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TextButton(onClick = { closeFunction() }) {
