@@ -40,14 +40,15 @@ class WorkoutLogViewModel(
         exerciseToAddTo = exercise
     }
 
-    fun addWorkout(date: LocalDate, weight: Float, numOfSets: Int,  numOfReps: Int) = viewModelScope.launch {
+    fun addWorkout(date: LocalDate, weight: Float, numOfSets: Int,  numOfReps: Int, notes: String) = viewModelScope.launch {
         val workout = Workout(
             UUID.randomUUID(),
             exerciseToAddTo.id,
             date,
             weightAmount = weight,
             sets = numOfSets,
-            reps = numOfReps
+            reps = numOfReps,
+            notes = notes
             )
         workoutRepository.addWorkout(workout)
     }

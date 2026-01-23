@@ -36,12 +36,13 @@ fun ExerciseList(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewM
                             exerciseItem = exercise,
                             exerciseViewModel = exerciseViewModel,
                             workoutState = workoutState,
-                            onChange = { weight, sets, reps ->
+                            onChange = { weight, sets, reps, notes ->
                                 exerciseViewModel.updateWorkout(
                                     exercise,
                                     weight,
                                     sets,
-                                    reps
+                                    reps,
+                                    notes
                                 )
                             }
                         )

@@ -12,7 +12,7 @@ import com.example.exerciseapplication.data.entity.Workout
 
 
 @Database(
-    version = 2,
+    version = 3,
     entities = [Exercise::class, Workout::class]
 )
 @TypeConverters(DateConverters::class)
@@ -30,7 +30,9 @@ abstract class ExerciseDatabase : RoomDatabase() {
                     context.applicationContext,
                     ExerciseDatabase::class.java,
                     "exercise_database"
-                ).build()
+                )
+                    .addMigrations(MIGRATION_2_3)
+                    .build()
                 INSTANCE = instance
                 instance
             }

@@ -4,5 +4,6 @@ data class WorkoutUiState(
     val reps: Int,
     val sets: Int,
     val weight: Float,
-    val existsInDb: Boolean
+    val existsInDb: Boolean,
+    val notes: String,
 )

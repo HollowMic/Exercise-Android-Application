@@ -27,7 +27,8 @@ class WorkoutRepository(private val workoutDao: WorkoutDao) {
                         oldWorkout.id,
                         workout.reps,
                         workout.sets,
-                        workout.weightAmount
+                        workout.weightAmount,
+                        workout.notes
                     )
                 }
                 InsertResult.DuplicateDate

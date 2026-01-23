@@ -70,14 +70,15 @@ class ExerciseViewModel(
         exerciseRepository.deactivateExercise(exerciseItem.id)
     }
 
-    fun addWorkout(exercise: Exercise, weight: Float, numOfSets: Int, numOfReps: Int) = viewModelScope.launch {
+    fun addWorkout(exercise: Exercise, weight: Float, numOfSets: Int, numOfReps: Int, notes: String) = viewModelScope.launch {
         val workout = Workout(
             UUID.randomUUID(),
             exercise.id,
             selectedDate.value,
             weightAmount = weight,
             sets = numOfSets,
-            reps = numOfReps
+            reps = numOfReps,
+            notes = notes
         )
         workoutRepository.addWorkout(workout)
     }
@@ -100,14 +101,16 @@ class ExerciseViewModel(
                 reps = exercise.exerciseRepDefault,
                 sets = exercise.exerciseSetDefault,
                 weight = exercise.defaultWeightAmount,
-                existsInDb = false
+                existsInDb = false,
+                notes = ""
             )
         } else {
             WorkoutUiState(
                 reps = workout.reps,
                 sets = workout.sets,
                 weight = workout.weightAmount,
-                existsInDb = true
+                existsInDb = true,
+                notes = workout.notes
             )
         }
     }
@@ -116,7 +119,8 @@ class ExerciseViewModel(
         exercise: Exercise,
         weight: Float,
         sets: Int,
-        reps: Int
+        reps: Int,
+        notes: String
     ) {
         val date = _selectedDate.value
 
@@ -128,7 +132,8 @@ class ExerciseViewModel(
                     performedDate = date,
                     reps = reps,
                     sets = sets,
-                    weightAmount = weight
+                    weightAmount = weight,
+                    notes = notes
                 )
             )
         }

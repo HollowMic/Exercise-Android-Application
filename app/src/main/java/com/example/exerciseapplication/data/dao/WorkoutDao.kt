@@ -19,14 +19,16 @@ interface WorkoutDao {
         SET
             reps = :reps,
             sets = :sets,
-            weightAmount = :weight
+            weightAmount = :weight,
+            notes = :notes
         WHERE id = :workoutId
     """)
     fun updateWorkout(
         workoutId: UUID,
         reps: Int,
         sets: Int,
-        weight: Float
+        weight: Float,
+        notes: String,
     )
 
     @Query("""

@@ -37,10 +37,12 @@ fun AddWorkoutOptionDialog(modifier: Modifier = Modifier, workoutLogViewModel: W
         var weight by remember { mutableFloatStateOf(0.0f) }
         var numOfSets by remember { mutableIntStateOf(3) }
         var numOfReps by remember { mutableIntStateOf(10) }
+        val notes by remember { mutableStateOf("") }
+
 
 
         fun saveWorkout() {
-            workoutLogViewModel.addWorkout(LocalDate.now(), weight, numOfSets, numOfReps)
+            workoutLogViewModel.addWorkout(LocalDate.now(), weight, numOfSets, numOfReps, notes)
             closeFunction()
         }
 

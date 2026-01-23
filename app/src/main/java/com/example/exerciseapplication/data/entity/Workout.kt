@@ -1,5 +1,6 @@
 package com.example.exerciseapplication.data.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -31,5 +32,7 @@ data class Workout(
     val reps: Int,
     val sets: Int,
     val weightAmount: Float,
+    @ColumnInfo(defaultValue = "")
+    val notes: String,
 )
 
