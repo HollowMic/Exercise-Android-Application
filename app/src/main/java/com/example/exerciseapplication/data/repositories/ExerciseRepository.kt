@@ -1,12 +1,15 @@
 package com.example.exerciseapplication.data.repositories
 
 import androidx.annotation.WorkerThread
+import androidx.room.Transaction
+import com.example.exerciseapplication.data.ExportData
 import com.example.exerciseapplication.data.dao.ExerciseDao
+import com.example.exerciseapplication.data.dao.WorkoutDao
 import com.example.exerciseapplication.data.entity.Exercise
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
-class ExerciseRepository(private val exerciseDao: ExerciseDao) {
+class ExerciseRepository(private val exerciseDao: ExerciseDao, private val workoutDao: WorkoutDao) {
     val exercises: Flow<List<Exercise>> = exerciseDao.getAllActiveExercises()
     val inactiveExercises: Flow<List<Exercise>> = exerciseDao.getAllInactiveExercises()
 
@@ -17,7 +20,7 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
 
     @WorkerThread
     suspend fun removeAllExercises() {
-        exerciseDao.deleteAllExercise()
+        exerciseDao.deleteAllExercises()
     }
 
     @WorkerThread
@@ -29,5 +32,22 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
     suspend fun reactivateExercise(id: UUID) {
         exerciseDao.setExerciseActive(id)
     }
+
+    suspend fun exportData(): ExportData {
+        return ExportData(
+            exercises = exerciseDao.getAllExercisesOnce(),
+            workouts = workoutDao.getAllWorkoutsOnce()
+        )
+    }
+
+    @Transaction
+    suspend fun importData(data: ExportData) {
+        exerciseDao.deleteAllExercises()
+        workoutDao.deleteAllWorkouts()
+        exerciseDao.insertAll(data.exercises)
+        workoutDao.insertAll(data.workouts)
+    }
+
+
 
 }

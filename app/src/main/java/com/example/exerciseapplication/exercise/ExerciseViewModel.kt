@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.exerciseapplication.ExerciseApplication
+import com.example.exerciseapplication.data.ExportData
 import com.example.exerciseapplication.data.entity.Exercise
 import com.example.exerciseapplication.data.entity.Workout
 import com.example.exerciseapplication.data.repositories.ExerciseRepository
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.util.UUID
 
@@ -137,6 +139,26 @@ class ExerciseViewModel(
                 )
             )
         }
+    }
+
+    private var currentDatabaseSnapshot: ExportData = ExportData(
+        exercises = emptyList(),
+        workouts = emptyList(),
+    )
+
+    fun _getDatabaseData() = viewModelScope.launch {
+        runBlocking {
+            currentDatabaseSnapshot = exerciseRepository.exportData()
+        }
+    }
+
+    fun getDatabaseData(): ExportData = runBlocking {
+        _getDatabaseData()
+        return@runBlocking currentDatabaseSnapshot
+    }
+
+    fun uploadNewDatabase(exportData: ExportData) = viewModelScope.launch {
+        exerciseRepository.importData(exportData)
     }
 
 

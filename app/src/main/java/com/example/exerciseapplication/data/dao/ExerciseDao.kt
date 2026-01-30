@@ -2,6 +2,7 @@ package com.example.exerciseapplication.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.exerciseapplication.data.entity.Exercise
 import kotlinx.coroutines.flow.Flow
@@ -27,12 +28,19 @@ interface ExerciseDao {
     @Query("DELETE FROM exercise WHERE id=:exerciseId")
     suspend fun deleteExerciseById(exerciseId: UUID)
 
-    @Query("DELETE FROM exercise ")
-    suspend fun deleteAllExercise()
+    @Query("DELETE FROM exercise")
+    suspend fun deleteAllExercises()
 
     @Query("UPDATE exercise SET in_current_rotation = 0 WHERE id = :exerciseId")
     suspend fun setExerciseInactive(exerciseId: UUID)
 
     @Query("UPDATE exercise SET in_current_rotation = 1 WHERE id = :exerciseId")
     suspend fun setExerciseActive(exerciseId: UUID)
+
+    @Query("SELECT * FROM exercise")
+    suspend fun getAllExercisesOnce(): List<Exercise>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(exercises: List<Exercise>)
+
 }

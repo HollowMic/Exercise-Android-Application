@@ -21,6 +21,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.exerciseapplication.exercise.ExerciseViewModel
 import com.example.exerciseapplication.utils.DateUtils
+import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,14 +45,30 @@ fun DateRow(modifier: Modifier = Modifier, exerciseViewModel: ExerciseViewModel)
         fun toggleExpanded() {
             expanded = !expanded
         }
-        val dateState = rememberDatePickerState()
+
+        val selectedDate by exerciseViewModel.selectedDate.collectAsState()
+
+        val dateState = rememberDatePickerState(
+            initialSelectedDateMillis = remember(selectedDate) {
+                selectedDate
+                    .atStartOfDay(ZoneOffset.UTC)
+                    .toInstant()
+                    .toEpochMilli()
+            }
+        )
+
         val millisToLocalDate = dateState.selectedDateMillis?.let {
             DateUtils().convertMillisToLocalDate(it)
         }
         val dateToString = millisToLocalDate?.let {
             DateUtils().dateToString(millisToLocalDate)
         } ?: "Choose Date"
-        exerciseViewModel.setDate(millisToLocalDate)
+
+        LaunchedEffect(millisToLocalDate) {
+            millisToLocalDate?.let {
+                exerciseViewModel.setDate(it)
+            }
+        }
 
         Surface(
             modifier = Modifier

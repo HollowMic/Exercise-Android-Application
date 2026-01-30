@@ -5,9 +5,13 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.exerciseapplication.data.serializer.LocalDateSerializer
+import com.example.exerciseapplication.data.serializer.UUIDSerializer
+import kotlinx.serialization.Serializable
 import java.time.LocalDate
 import java.util.UUID
 
+@Serializable
 @Entity(
     tableName = "workout",
     foreignKeys = [
@@ -26,8 +30,11 @@ import java.util.UUID
     )]
 )
 data class Workout(
+    @Serializable(with = UUIDSerializer::class)
     @PrimaryKey val id: UUID,
+    @Serializable(with = UUIDSerializer::class)
     val exerciseId: UUID,
+    @Serializable(with = LocalDateSerializer::class)
     val performedDate: LocalDate,
     val reps: Int,
     val sets: Int,

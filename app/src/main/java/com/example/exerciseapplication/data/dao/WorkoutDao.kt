@@ -66,4 +66,14 @@ interface WorkoutDao {
         WHERE exerciseId = :exerciseId
     """)
     fun getWorkoutsForExercise(exerciseId: UUID): Flow<List<Workout>>
+
+    @Query("DELETE FROM workout")
+    suspend fun deleteAllWorkouts()
+
+    @Query("SELECT * FROM workout")
+    suspend fun getAllWorkoutsOnce(): List<Workout>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(workouts: List<Workout>)
+
 }
