@@ -3,6 +3,10 @@ package com.example.exerciseapplication.exercise.page
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,6 +33,7 @@ import com.example.exerciseapplication.Page
 import com.example.exerciseapplication.R
 import com.example.exerciseapplication.data.ExportData
 import com.example.exerciseapplication.exercise.ExerciseViewModel
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -45,13 +51,23 @@ fun ExercisePage(
         showDialog = false
     }
 
+    var showLoading by remember { mutableStateOf(false) }
+    fun showingLoading() {
+        showLoading = true
+    }
+    fun hideLoading() {
+        showLoading = false
+    }
+
     val context = LocalContext.current
 
     val downloadDatabase = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("text/plain")
     ) { uri: Uri? ->
 
-        val exportData = exerciseViewModel.getDatabaseData()
+        showingLoading()
+
+        val exportData = runBlocking { exerciseViewModel.getDatabaseData() }
         val json = Json { prettyPrint = true }
 
         val jsonString = json.encodeToString(exportData)
@@ -60,12 +76,14 @@ fun ExercisePage(
             context.contentResolver.openOutputStream(it)?.use { outputStream ->
                 outputStream.write(jsonString.toByteArray())
             }
-        }
+        }.also { hideLoading() }
+
     }
 
     val uploadDatabase = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult = { uri ->
+            showingLoading()
             uri?.let {
                 context.contentResolver.openInputStream(it)?.use { inputStream ->
                     val json = Json { prettyPrint = true }
@@ -76,7 +94,7 @@ fun ExercisePage(
                     val importData = json.decodeFromString<ExportData>(jsonString)
                     exerciseViewModel.uploadNewDatabase(importData)
                 }
-            }
+            }.also { hideLoading() }
         }
     )
 
@@ -103,11 +121,30 @@ fun ExercisePage(
         }
     ) {
 
+        Box(modifier = it.fillMaxSize()) {
 
-        if (showDialog) {
-            AddExerciseOptionDialog(modifier = it, exerciseViewModel = exerciseViewModel, closeFunction = { hideDialog() })
+            ExercisePageContents(
+                modifier = Modifier.matchParentSize(),
+                exerciseViewModel = exerciseViewModel
+            )
+
+            if (showDialog) {
+                AddExerciseOptionDialog(
+                    modifier = Modifier.align(Alignment.Center),
+                    exerciseViewModel = exerciseViewModel,
+                    closeFunction = { hideDialog() }
+                )
+            }
+
+            AnimatedVisibility(
+                visible = showLoading,
+                enter = fadeIn(animationSpec = tween(150)),
+                exit = fadeOut(animationSpec = tween(150)),
+                modifier = Modifier.matchParentSize()
+            ) {
+                LoadingPopup(Modifier.matchParentSize())
+            }
         }
-        ExercisePageContents(modifier = it, exerciseViewModel = exerciseViewModel)
     }
 }
 

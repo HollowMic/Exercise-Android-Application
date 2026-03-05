@@ -104,26 +104,19 @@ fun ExerciseRow(
         onChange(weightAmount, numOfSets, numOfReps, notes)
     }
 
-    var expanded by remember(workoutState.existsInDb) {
-        mutableStateOf(workoutState.existsInDb) //TODO make this not be true on date change.
-    }
-    var selected by remember(workoutState.existsInDb) {
-        mutableStateOf(workoutState.existsInDb)
-    }
+    val selected = workoutState.existsInDb
+    var expanded by remember { mutableStateOf(false) }
 
     fun toggleExpanded() {
         expanded = !expanded
-        if (expanded) {
-            selected = true
-            onChange(weightAmount, numOfSets, numOfReps, notes)
-        }
     }
+
     fun toggleSelect() {
-        selected = !selected
-        onChange(weightAmount, numOfSets, numOfReps, notes)
-        if (!selected) {
+        if (selected) {
             expanded = false
             exerciseViewModel.removeWorkout(exerciseItem)
+        } else {
+            onChange(weightAmount, numOfSets, numOfReps, notes)
         }
     }
 
