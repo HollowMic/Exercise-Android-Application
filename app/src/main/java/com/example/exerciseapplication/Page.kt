@@ -1,11 +1,8 @@
 package com.example.exerciseapplication
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,8 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,27 +29,10 @@ fun Page(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    if (true == null) {
-                        Text(
-                            text = stringResource(pageName),
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    } else {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = stringResource(pageName),
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                            Text(
-                                text = "Secondary",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.secondary
-                            )
-                        }
-                    }
+                    Text(
+                        text = stringResource(pageName),
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 },
                 navigationIcon = {
                     if (openDrawer != null) {
@@ -66,7 +46,7 @@ fun Page(
                     } else {
                         IconButton(onClick = { navigate?.invoke() }) {
                             Icon(
-                                Icons.Rounded.ArrowBack,
+                                painter = painterResource(R.drawable.outline_arrow_back_24),
                                 contentDescription = stringResource(id = R.string.back_button_description),
                                 tint = MaterialTheme.colorScheme.primary
                             )
