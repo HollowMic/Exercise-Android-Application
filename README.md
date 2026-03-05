@@ -4,9 +4,7 @@ An application for recording your gym sessions
 
 ***
 
-<img src="/assets/images/Exercise Application Light.jpg" width="300" height="630" alt="Exercise Application Light">
-
-<img src="/assets/images/Exercise Application Dark.jpg" width="300" height="630" alt="Exercise Application Dark">
+<img src="/assets/images/Exercise Application Light.jpg" width="360" height="760" alt="Exercise Application Light">    <img src="/assets/images/Exercise Application Dark.jpg" width="360" height="760" alt="Exercise Application Dark">
 
 ***
 
