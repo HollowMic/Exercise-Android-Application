@@ -43,4 +43,20 @@ interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(exercises: List<Exercise>)
 
+    @Query("""
+        UPDATE exercise SET 
+            exercise_name = :exerciseName,
+            exercise_default_sets = :setsDefault,
+            exercise_default_reps = :repsDefault,
+            default_weight_amount = :weightDefault
+        WHERE id = :exerciseId
+            """)
+    suspend fun setExerciseInfo(
+        exerciseId: UUID,
+        exerciseName: String,
+        setsDefault: Int,
+        repsDefault: Int,
+        weightDefault: Float
+    )
+
 }

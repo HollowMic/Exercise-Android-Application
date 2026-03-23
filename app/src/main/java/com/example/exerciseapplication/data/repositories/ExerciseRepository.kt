@@ -33,6 +33,17 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao, private val worko
         exerciseDao.setExerciseActive(id)
     }
 
+    @WorkerThread
+    suspend fun updateExerciseInfo(id: UUID, exercise: Exercise) {
+        exerciseDao.setExerciseInfo(
+            exerciseId = id,
+            exerciseName = exercise.exerciseName,
+            setsDefault = exercise.exerciseSetDefault,
+            repsDefault = exercise.exerciseRepDefault,
+            weightDefault = exercise.defaultWeightAmount
+        )
+    }
+
     suspend fun exportData(): ExportData {
         return ExportData(
             exercises = exerciseDao.getAllExercisesOnce(),

@@ -17,8 +17,8 @@ val OnPrimary = Color(0xFFffffff)
 val OnBackgroundBlack = Color(0xFF1a1c19)
 
 
-val GreenPrimaryDark = Color(0xFF73dc84)
-val GreenSecondaryDark = Color(0xFF9ed67d)
+val GreenPrimaryDark = Color(0xFF5AB47E)
+val GreenSecondaryDark = Color(0xFF87AF6F)
 val PurpleTertiaryDark = Color(0xFFdeb7ff)
 val RedErrorDark = Color(0xFFffb4ab)
 val GreyNeutralDark = Color(0xFF1a1c19)

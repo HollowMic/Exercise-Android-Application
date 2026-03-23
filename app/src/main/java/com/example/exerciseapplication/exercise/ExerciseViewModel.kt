@@ -161,8 +161,25 @@ class ExerciseViewModel(
         exerciseRepository.importData(exportData)
     }
 
-    fun saveNewExerciseDefaults() {
-        // TODO Implement Function
+    fun saveNewExerciseDefaults(
+        currentExercise: Exercise,
+        newName: String,
+        newSets: Int,
+        newReps: Int,
+        newWeight: Float
+    ) = viewModelScope.launch {
+        val newExercise = Exercise(
+            id = currentExercise.id,
+            exerciseName = newName,
+            exerciseSetDefault = newSets,
+            exerciseRepDefault = newReps,
+            defaultWeightAmount = newWeight,
+            inCurrentRotation = currentExercise.inCurrentRotation
+        )
+        exerciseRepository.updateExerciseInfo(
+            currentExercise.id,
+            newExercise
+        )
     }
 
 

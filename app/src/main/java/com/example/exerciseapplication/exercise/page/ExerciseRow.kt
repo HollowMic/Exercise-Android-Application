@@ -215,7 +215,20 @@ fun ExerciseRow(
                                 }
                                 DropdownMenu(expanded = optionsMenu, onDismissRequest = { optionsMenu = false }) {
                                     Box(modifier = Modifier.padding(10.dp, 0.dp)) {
-                                        Button(onClick = { exerciseViewModel.saveNewExerciseDefaults() }) {
+                                        Button(
+//                                            colors = ButtonDefaults.buttonColors(
+//                                                containerColor =
+//                                            ), TODO Fix Colours
+                                            onClick = {
+                                            exerciseViewModel.saveNewExerciseDefaults(
+                                                currentExercise = exerciseItem,
+                                                newName = exerciseItem.exerciseName,
+                                                newSets = numOfSets,
+                                                newReps = numOfReps,
+                                                newWeight = weightAmount
+                                            )
+                                            optionsMenu = false
+                                        }) {
                                             Text(text = stringResource(id = R.string.save_as_new_default))
                                         }
                                     }
