@@ -16,8 +16,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -203,28 +206,45 @@ fun ExerciseRow(
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Box(modifier = Modifier.padding(10.dp, 0.dp)) {
-                                var buttonColor by remember { mutableStateOf(Color(0xFF440000)) }
-                                var removeCounter by remember { mutableIntStateOf(0) }
-                                Button(
-                                    onClick = {
-                                        removeCounter += 1
-                                        when (removeCounter) {
-                                            1 -> buttonColor = Color(0xFF880000)
-                                            2 -> buttonColor = Color(0xFFFF0000)
-                                            3 -> {
-                                                exerciseViewModel.removeExercise(exerciseItem)
-                                                removeCounter = 0
-                                            }
+                            Column {
+                                var optionsMenu by remember{ mutableStateOf(false) }
+                                Box(modifier = Modifier.padding(0.dp, 0.dp)) {
+                                    IconButton(onClick = { optionsMenu = true }) {
+                                        Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = "Options")
+                                    }
+                                }
+                                DropdownMenu(expanded = optionsMenu, onDismissRequest = { optionsMenu = false }) {
+                                    Box(modifier = Modifier.padding(10.dp, 0.dp)) {
+                                        Button(onClick = { exerciseViewModel.saveNewExerciseDefaults() }) {
+                                            Text(text = stringResource(id = R.string.save_as_new_default))
                                         }
-                                    },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = buttonColor
-                                    )
-                                ) {
-                                    Text(text = "Remove")
+                                    }
+                                    Box(modifier = Modifier.padding(10.dp, 0.dp)) {
+                                        var buttonColor by remember { mutableStateOf(Color(0xFF440000)) }
+                                        var removeCounter by remember { mutableIntStateOf(0) }
+                                        Button(
+                                            onClick = {
+                                                removeCounter += 1
+                                                when (removeCounter) {
+                                                    1 -> buttonColor = Color(0xFF880000)
+                                                    2 -> buttonColor = Color(0xFFFF0000)
+                                                    3 -> {
+                                                        exerciseViewModel.removeExercise(exerciseItem)
+                                                        removeCounter = 0
+                                                    }
+                                                }
+                                            },
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = buttonColor
+                                            )
+                                        ) {
+                                            Text(text = "Remove")
+                                        }
+                                    }
                                 }
                             }
+
+
                             Box {
                                 Row(
                                     modifier = Modifier

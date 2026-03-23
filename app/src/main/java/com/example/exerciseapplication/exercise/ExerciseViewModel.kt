@@ -161,6 +161,10 @@ class ExerciseViewModel(
         exerciseRepository.importData(exportData)
     }
 
+    fun saveNewExerciseDefaults() {
+        // TODO Implement Function
+    }
+
 
     companion object {
         val Factory: ViewModelProvider.Factory = object: ViewModelProvider.Factory {
